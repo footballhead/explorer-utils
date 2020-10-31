@@ -4,6 +4,7 @@
 #include <stb_image_write/stb_image_write.h>
 
 #include <array>
+#include <iostream>
 #include <vector>
 
 namespace {
@@ -58,9 +59,17 @@ std::vector<uint8_t> ThrowAwayGarbage(std::vector<uint8_t> const& data)
 
 } // namespace
 
-int main()
+int main(int argc, char** argv)
 {
-    auto const cgapics = read_binary_file("CGAPICS.PIC");
+    if (argc < 2) {
+        std::cerr << "Usage: " << argv[0] << " in.pic out.png\n";
+        return 1;
+    }
+
+    auto const in_filename = argv[1];
+    auto const out_filename = argv[2];
+
+    auto const cgapics = read_binary_file(in_filename);
     auto const half_nibbles = ThrowAwayGarbage(ToHalfNibbles(cgapics));
 
     std::vector<color_t> image;
@@ -80,7 +89,7 @@ int main()
     }
 
     // I'm relying on color_t to serialize properly without intervention
-    stbi_write_png("CGAPICS.PNG", kImageWidth, base / kImageWidth, kImageComponents, image.data(), kImageWidth * kImageComponents);
+    stbi_write_png(out_filename, kImageWidth, base / kImageWidth, kImageComponents, image.data(), kImageWidth * kImageComponents);
 
     return 0;
 }
