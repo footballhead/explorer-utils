@@ -6,7 +6,7 @@
 
 using namespace std::string_literals;
 
-std::vector<uint8_t> read_binary_file(std::string const& file)
+std::vector<uint8_t> ReadBinaryFile(std::string const& file)
 {
     std::ifstream in(file, std::ios_base::binary);
     if (!in.good()) {
