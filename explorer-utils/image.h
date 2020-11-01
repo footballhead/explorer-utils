@@ -17,6 +17,8 @@ public:
     color_t Get(int x, int y) const { return pixels_.at(y * width_ + x); }
     void Set(int x, int y, color_t const& c) { pixels_[y * width_ + x] = c; }
 
+    void Blit(Image const& src, int x, int y);
+
     int GetWidth() const { return width_; }
     int GetHeight() const { return height_; }
     std::vector<color_t> const& GetData() const { return pixels_; }

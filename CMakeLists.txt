@@ -11,3 +11,4 @@ add_subdirectory(explorer-utils)
 # Bins
 add_subdirectory(cgapics2png)
 add_subdirectory(egapics2png)
+add_subdirectory(rms2png)
