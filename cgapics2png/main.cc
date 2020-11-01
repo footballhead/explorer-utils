@@ -1,5 +1,6 @@
 #include <explorer-utils/color.h>
 #include <explorer-utils/file.h>
+#include <explorer-utils/palette.h>
 
 #include <stb_image_write/stb_image_write.h>
 
@@ -18,13 +19,6 @@ uint8_t HalfNibble(uint8_t const val, int const part)
 {
     return (val >> (part*2)) & 0x3;
 }
-
-std::array<color_t, 4> cga = {
-    color_t{0x00, 0x00, 0x00},
-    color_t{0x00, 0xFF, 0xFF},
-    color_t{0xFF, 0x00, 0xFF},
-    color_t{0xFF, 0xFF, 0xFF},
-};
 
 std::vector<uint8_t> ToHalfNibbles(std::vector<uint8_t> const& data)
 {
@@ -80,10 +74,10 @@ int main(int argc, char** argv)
             for (auto x = 0; x < kImageWidth; ++x) {
                 // Throw away the first row because the images are actually 15x15 in 16x16 cells
                 if (y % kImageWidth == 0) {
-                    image.push_back(cga[0]);
+                    image.push_back(cga_palette[0]);
                     continue;
                 }
-                image.push_back(cga[half_nibbles[base + y * kImageWidth + x]]);
+                image.push_back(cga_palette[half_nibbles[base + y * kImageWidth + x]]);
             }
         }
     }
