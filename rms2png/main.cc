@@ -20,18 +20,20 @@ constexpr auto kRoomMonsterOffset = 0xA1;
 
 int main(int argc, char** argv)
 {
-    if (argc < 2) {
-        std::cerr << "Usage: " << argv[0] << " egapics.pic pymon.pic in.rms prefix\n";
+    if (argc < 6) {
+        std::cerr << "Usage: " << argv[0] << " egapics.pic pymon.pic pymask.pic in.rms prefix\n";
         return 1;
     }
 
     auto const egapics_filename = argv[1];
     auto const pymon_filename = argv[2];
-    auto const rms_filename = argv[3];
-    auto const out_prefix = argv[4];
+    auto const pymask_filename = argv[3];
+    auto const rms_filename = argv[4];
+    auto const out_prefix = argv[5];
 
     auto const tile_images = LoadEgaSpritesheet(egapics_filename);
     auto const monster_images = LoadEgaSpritesheet(pymon_filename);
+    auto const monster_mask_images = LoadEgaSpritesheet(pymask_filename);
     auto const tile_width = tile_images[0].GetWidth();
     auto const tile_height = tile_images[0].GetHeight();
 
@@ -62,23 +64,18 @@ int main(int argc, char** argv)
                     continue;
                 }
 
-                if (object <= 'c') {
-                    // TODO why are monsters wrong?
-                    continue;
-                }
-
-                auto mask = 0;
+                auto tile_mask = 0;
                 switch (object) {
                 case 'd': // Magical darkness
                     tile = 12;
                     break;
                 case 'e': // Treasure chest
                     tile = 21;
-                    mask = 64;
+                    tile_mask = 64;
                     break;
                 case 'f': // Smoke
                     tile = 46;
-                    mask = 66;
+                    tile_mask = 66;
                     break;
                 case 'g': // Movable block
                     tile = 29;
@@ -106,19 +103,19 @@ int main(int argc, char** argv)
                     break;
                 case 'n': // Old body
                     tile = 22;
-                    mask = 69;
+                    tile_mask = 69;
                     break;
                 case 'o': // Old bones
                     tile = 17;
-                    mask = 70;
+                    tile_mask = 70;
                     break;
                 case 'p': // Old stone coffin
                     tile = 49;
-                    mask = 71;
+                    tile_mask = 71;
                     break;
                 case 'q': // Old grave
                     tile = 54;
-                    mask = 65;
+                    tile_mask = 65;
                     break;
                 case 'r': // Movable glass block:
                     // TODO
@@ -146,12 +143,20 @@ int main(int argc, char** argv)
                     break;
                 }
 
-                if (mask > 0) {
-                    auto const& obj_img = object <= 'c' ? monster_images[tile] : tile_images[tile];
-                    auto const& mask_img = tile_images[mask];
+                if (object <= 'c') {
+                    // Monsters (with mask)
+                    // TODO: The object doesn't correspond 1:1 with the monster!
+                    auto const& obj_img = monster_images[object - 1];
+                    auto const& mask_img = monster_mask_images[object - 1];
+                    map_image.Blit(obj_img, mask_img, x * obj_img.GetWidth(), y * obj_img.GetHeight());
+                } else if (tile_mask > 0) {
+                    // Tiles with mask
+                    auto const& obj_img = tile_images[tile];
+                    auto const& mask_img = tile_images[tile_mask];
                     map_image.Blit(obj_img, mask_img, x * obj_img.GetWidth(), y * obj_img.GetHeight());
                 } else {
-                    auto const& obj_img = object <= 'c' ? monster_images[tile] : tile_images[tile];
+                    // Tiles no mask
+                    auto const& obj_img = tile_images[tile];
                     map_image.Blit(obj_img, x * obj_img.GetWidth(), y * obj_img.GetHeight());
                 }
             }
