@@ -7,6 +7,7 @@
 #include <string>
 
 namespace {
+
 constexpr auto kImageComponents = 3; // RGB
 constexpr auto kMapWidth = 20;
 constexpr auto kMapHeight = 8;
@@ -66,15 +67,18 @@ int main(int argc, char** argv)
                     continue;
                 }
 
+                auto mask = 0;
                 switch (object) {
                 case 'd': // Magical darkness
                     tile = 12;
                     break;
                 case 'e': // Treasure chest
                     tile = 21;
+                    mask = 64;
                     break;
                 case 'f': // Smoke
                     tile = 46;
+                    mask = 66;
                     break;
                 case 'g': // Movable block
                     tile = 29;
@@ -102,15 +106,19 @@ int main(int argc, char** argv)
                     break;
                 case 'n': // Old body
                     tile = 22;
+                    mask = 69;
                     break;
                 case 'o': // Old bones
                     tile = 17;
+                    mask = 70;
                     break;
                 case 'p': // Old stone coffin
                     tile = 49;
+                    mask = 71;
                     break;
                 case 'q': // Old grave
                     tile = 54;
+                    mask = 65;
                     break;
                 case 'r': // Movable glass block:
                     // TODO
@@ -138,8 +146,14 @@ int main(int argc, char** argv)
                     break;
                 }
 
-                auto const& obj_img = object <= 'c' ? monster_images[tile] : tile_images[tile];
-                map_image.Blit(obj_img, x * obj_img.GetWidth(), y * obj_img.GetHeight());
+                if (mask > 0) {
+                    auto const& obj_img = object <= 'c' ? monster_images[tile] : tile_images[tile];
+                    auto const& mask_img = tile_images[mask];
+                    map_image.Blit(obj_img, mask_img, x * obj_img.GetWidth(), y * obj_img.GetHeight());
+                } else {
+                    auto const& obj_img = object <= 'c' ? monster_images[tile] : tile_images[tile];
+                    map_image.Blit(obj_img, x * obj_img.GetWidth(), y * obj_img.GetHeight());
+                }
             }
         }
 
