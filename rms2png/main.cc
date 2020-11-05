@@ -14,7 +14,8 @@ constexpr auto kMapHeight = 8;
 
 constexpr auto kRoomRecordSize = 0x168;
 constexpr auto kRoomTileOffset = 0x1;
-constexpr auto kRoomMonsterOffset = 0xA1;
+constexpr auto kRoomObjectOffset = 0xA1;
+constexpr auto kRoomMonsterIdOffset = 0x141;
 
 } // namespace
 
@@ -57,7 +58,7 @@ int main(int argc, char** argv)
 
                 // SECOND do object
                 // TODO: Object mask/transparency
-                auto object = rms_data[(map_index * kRoomRecordSize) + kRoomMonsterOffset + y * kMapWidth + x];
+                auto object = rms_data[(map_index * kRoomRecordSize) + kRoomObjectOffset + y * kMapWidth + x];
 
                 // tile 0 is the null tile, no monster here
                 if (object == 0) {
@@ -139,15 +140,15 @@ int main(int argc, char** argv)
                     std::cerr << "WARN: Map " << map_index << " wanted stone marker\n";
                     break;
                 default:
-                    tile = object - 1;
+                    object = rms_data[(map_index * kRoomRecordSize) + kRoomMonsterIdOffset] - 1;
                     break;
                 }
 
                 if (object <= 'c') {
                     // Monsters (with mask)
                     // TODO: The object doesn't correspond 1:1 with the monster!
-                    auto const& obj_img = monster_images[object - 1];
-                    auto const& mask_img = monster_mask_images[object - 1];
+                    auto const& obj_img = monster_images[object];
+                    auto const& mask_img = monster_mask_images[object];
                     map_image.Blit(obj_img, mask_img, x * obj_img.GetWidth(), y * obj_img.GetHeight());
                 } else if (tile_mask > 0) {
                     // Tiles with mask
