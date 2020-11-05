@@ -17,20 +17,24 @@ constexpr auto kRoomTileOffset = 0x1;
 constexpr auto kRoomObjectOffset = 0xA1;
 constexpr auto kRoomMonsterIdOffset = 0x141;
 
+constexpr auto kMonDatRecordSize = 0x1F;
+constexpr auto kMonDatGfxIdOffset = 0x16;
+
 } // namespace
 
 int main(int argc, char** argv)
 {
-    if (argc < 6) {
-        std::cerr << "Usage: " << argv[0] << " egapics.pic pymon.pic pymask.pic in.rms prefix\n";
+    if (argc < 7) {
+        std::cerr << "Usage: " << argv[0] << " egapics.pic pymon.pic pymask.pic pymon.dat in.rms prefix\n";
         return 1;
     }
 
     auto const egapics_filename = argv[1];
     auto const pymon_filename = argv[2];
     auto const pymask_filename = argv[3];
-    auto const rms_filename = argv[4];
-    auto const out_prefix = argv[5];
+    auto const pymon_dat_filename = argv[4];
+    auto const rms_filename = argv[5];
+    auto const out_prefix = argv[6];
 
     auto const tile_images = LoadEgaSpritesheet(egapics_filename);
     auto const monster_images = LoadEgaSpritesheet(pymon_filename);
@@ -38,7 +42,8 @@ int main(int argc, char** argv)
     auto const tile_width = tile_images[0].GetWidth();
     auto const tile_height = tile_images[0].GetHeight();
 
-    auto rms_data = ReadBinaryFile(rms_filename);
+    auto const rms_data = ReadBinaryFile(rms_filename);
+    auto const monster_data = ReadBinaryFile(pymon_dat_filename);
 
     for (auto map_index = 0; map_index < rms_data.size() / kRoomRecordSize; ++map_index) {
         Image map_image(tile_width * kMapWidth, tile_height * kMapHeight);
@@ -146,10 +151,11 @@ int main(int argc, char** argv)
 
                 if (object <= 'c') {
                     // Monsters (with mask)
-                    // TODO: The object doesn't correspond 1:1 with the monster!
-                    auto const& obj_img = monster_images[object];
-                    auto const& mask_img = monster_mask_images[object];
-                    map_image.Blit(obj_img, mask_img, x * obj_img.GetWidth(), y * obj_img.GetHeight());
+                    auto const monster_index = object;
+                    auto const monster_gfx = monster_data[monster_index * kMonDatRecordSize + kMonDatGfxIdOffset] - 1;
+                    auto const& monster_img = monster_images[monster_gfx];
+                    auto const& mask_img = monster_mask_images[monster_gfx];
+                    map_image.Blit(monster_img, mask_img, x * monster_img.GetWidth(), y * monster_img.GetHeight());
                 } else if (tile_mask > 0) {
                     // Tiles with mask
                     auto const& obj_img = tile_images[tile];
