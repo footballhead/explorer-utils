@@ -48,12 +48,21 @@ int main(int argc, char** argv)
     for (auto map_index = 0; map_index < rms_data.size() / kRoomRecordSize; ++map_index) {
         Image map_image(tile_width * kMapWidth, tile_height * kMapHeight);
 
+        // TODO: Cheaters versions of the maps
+        // Make glass walls visible
+        // No magical darkness
+        // Highlight important traps
+        // Reveal soft walls and secret doors
+        // No fog
+        // Easier to see Quasits
+
         for (auto y = 0; y < kMapHeight; ++y) {
             for (auto x = 0; x < kMapWidth; ++x) {
                 // FIRST do tile
                 auto tile = rms_data[(map_index * kRoomRecordSize) + kRoomTileOffset + y * kMapWidth + x] - 1;
 
                 // HACK: Only trap tiles seem to be out of bounds
+                // TODO: There are many kinds of traps (wands, XP) but they're stored as ASCII chars. Figure them out
                 if (tile >= tile_images.size()) {
                     tile = 20;
                 }
@@ -62,10 +71,10 @@ int main(int argc, char** argv)
                 map_image.Blit(tile_img, x * tile_img.GetWidth(), y * tile_img.GetHeight());
 
                 // SECOND do object
-                // TODO: Object mask/transparency
+                // TODO: Object/monster mask/transparency
                 auto object = rms_data[(map_index * kRoomRecordSize) + kRoomObjectOffset + y * kMapWidth + x];
 
-                // tile 0 is the null tile, no monster here
+                // 0 is null, nothing here
                 if (object == 0) {
                     continue;
                 }
@@ -73,7 +82,7 @@ int main(int argc, char** argv)
                 auto tile_mask = 0;
                 switch (object) {
                 case 'd': // Magical darkness
-                    tile = 12;
+                    tile = 47;
                     break;
                 case 'e': // Treasure chest
                     tile = 21;
@@ -101,8 +110,7 @@ int main(int argc, char** argv)
                     // TODO
                     break;
                 case 'l': // Soft piece of wall
-                    // TODO
-                    std::cerr << "WARN: Map " << map_index << " wanted soft piece of wall\n";
+                    tile = 2;
                     break;
                 case 'm': // Soft pile of rubble
                     tile = 18;
@@ -128,10 +136,12 @@ int main(int argc, char** argv)
                     std::cerr << "WARN: Map " << map_index << " wanted movable glass block\n";
                     break;
                 case 's': // Old skeleton
-                    tile = 74;
+                    // TODO
+                    std::cerr << "WARN: Map " << map_index << " wanted old skeleton (s)\n";
                     break;
                 case 't': // Old skeleton
-                    tile = 75;
+                    // TODO
+                    std::cerr << "WARN: Map " << map_index << " wanted old skeleton (t)\n";
                     break;
                 case 'u': // Hollow obilisk
                     // TODO
