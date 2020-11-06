@@ -4,6 +4,7 @@
 
 #include <stb_image_write/stb_image_write.h>
 
+#include <fstream>
 #include <iostream>
 #include <string>
 
@@ -191,6 +192,53 @@ int main(int argc, char** argv)
         // intervention which may not be the case on non-x86 platforms
         auto const out_filename = out_prefix + std::to_string(room_index) + ".png";
         stbi_write_png(out_filename.c_str(), map_image.GetWidth(), map_image.GetHeight(), kImageComponents, map_image.GetData().data(), map_image.GetWidth() * kImageComponents);
+
+        std::ofstream html_out(out_prefix + std::to_string(room_index) + ".html");
+        html_out << "<html><body><div style='margin-left: auto; margin-right: auto; text-align: center;'>";
+
+        if (room.nav.up > 0) {
+            html_out << "<p><a href='" << out_prefix + std::to_string(room.nav.up - 1) + ".html" << "'><strong>UP STAIRS</strong></a></p>";
+        } else {
+            html_out << "<p style='color: lightgray;'>UP STAIRS</p>";
+        }
+
+        if (room.nav.north > 0) {
+            html_out << "<p><a href='" << out_prefix + std::to_string(room.nav.north - 1) + ".html" << "'><strong>&uarr;</strong></a></p>";
+        } else {
+            html_out << "<p style='color: lightgray;'>&uarr;</p>";
+        }
+
+        html_out << "<p>";
+        
+        if (room.nav.west > 0) {
+            html_out << "<a href='" << out_prefix + std::to_string(room.nav.west - 1) + ".html" << "'><strong>&larr;</strong></a>";
+        } else {
+            html_out << "<span style='color: lightgray;'>&larr;</span>";
+        }
+
+        html_out << " <img style='vertical-align: middle;' src='" << out_filename << "'> ";
+
+        if (room.nav.east > 0) {
+            html_out << "<a href='" << out_prefix + std::to_string(room.nav.east - 1) + ".html" << "'><strong>&rarr;</strong></a>";
+        } else {
+            html_out << "<span style='color: lightgray;'>&rarr;</span>";
+        }
+
+        html_out << "</p>";
+
+        if (room.nav.south > 0) {
+            html_out << "<p><a href='" << out_prefix + std::to_string(room.nav.south - 1) + ".html" << "'><strong>&darr;</a></strong></p>";
+        } else {
+            html_out << "<p style='color: lightgray;'>&darr;</p>";
+        }
+
+        if (room.nav.down > 0) {
+            html_out << "<p><a href='" << out_prefix + std::to_string(room.nav.down - 1) + ".html" << "'><strong>DOWN STAIRS</strong></a></p>";
+        } else {
+            html_out << "<p style='color: lightgray;'>DOWN STAIRS</p>";
+        }
+
+        html_out << "</div></body></html>";
     }
 
     return 0;
