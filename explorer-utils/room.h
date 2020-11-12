@@ -33,6 +33,16 @@ struct room_t {
     // uint8_t unknown;
     // uint8_t unknown;
     // std::string name;
+
+    enum class object_type {
+        none,
+        monster,
+        object
+    };
+
+    uint8_t GetTile(int x, int y) const;
+    object_type GetObjectType(int x, int y) const;
+    uint8_t GetObject(int x, int y) const;
 };
 
 std::vector<room_t> LoadRooms(std::string const& filename);

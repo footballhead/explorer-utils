@@ -91,6 +91,7 @@ int GetObjectTileMask(uint8_t object)
         return 71;
     case 'q': // Old grave
         return 65;
+    // TODO: Verify and add
     }
 
     return 0;

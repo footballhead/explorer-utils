@@ -1,0 +1,12 @@
+add_executable(rmsedit
+    main.cc
+    )
+target_link_libraries(rmsedit
+    explorer-utils
+    stb_image
+    ${SDL2_LIBRARIES}
+    )
+target_include_directories(rmsedit
+    PRIVATE
+        ${SDL2_INCLUDE_DIRS}
+    )
