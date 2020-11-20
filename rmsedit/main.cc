@@ -175,39 +175,56 @@ int main(int argc, char** argv) {
   auto const rooms = LoadRooms("DUNGEON.RMS");
   auto const monsters = LoadMonsterData("PYMON.DAT");
 
-  auto my_timer_id = SDL_AddTimer(
-      1000,
-      [](Uint32 interval, void* userdata) -> Uint32 {
-        SDL_Event event;
-        SDL_UserEvent userevent;
-
-        userevent.type = SDL_USEREVENT;
-        userevent.code = 0;
-        userevent.data1 = NULL;
-        userevent.data2 = NULL;
-
-        event.type = SDL_USEREVENT;
-        event.user = userevent;
-
-        SDL_PushEvent(&event);
-        return interval;
-      },
-      nullptr);
-
   auto room_index = 0;
   auto running = true;
+
+  // Key handling function, split out of main loop to reduce indentation
+  auto do_key = [&room_index, &rooms](SDL_Keycode const keycode) {
+    auto const& room = rooms[room_index];
+
+    switch (keycode) {
+      case SDLK_UP:
+        if (room.nav.north != 0) {
+          room_index = room.nav.north - 1;
+        }
+        break;
+      case SDLK_DOWN:
+        if (room.nav.south != 0) {
+          room_index = room.nav.south - 1;
+        }
+        break;
+      case SDLK_LEFT:
+        if (room.nav.west != 0) {
+          room_index = room.nav.west - 1;
+        }
+        break;
+      case SDLK_RIGHT:
+        if (room.nav.east != 0) {
+          room_index = room.nav.east - 1;
+        }
+        break;
+      case SDLK_c:
+        if (room.nav.up != 0) {
+          room_index = room.nav.up - 1;
+        } else if (room.nav.down != 0) {
+          room_index = room.nav.down - 1;
+        }
+        break;
+    }
+  };
+
   SDL_Event event;
   while (running && SDL_WaitEvent(&event)) {
+    auto const& room = rooms[room_index];
+
     switch (event.type) {
       case SDL_QUIT:
         running = false;
         break;
-      case SDL_USEREVENT:
-        room_index = (room_index + 1) % rooms.size();
+      case SDL_KEYDOWN:
+        do_key(event.key.keysym.sym);
         break;
     }
-
-    auto const& room = rooms[room_index];
 
     // Only draw on new events
     SDL_RenderClear(renderer.get());
@@ -239,8 +256,6 @@ int main(int argc, char** argv) {
     }
     SDL_RenderPresent(renderer.get());
   }
-
-  SDL_RemoveTimer(my_timer_id);
 
   return 0;
 }
