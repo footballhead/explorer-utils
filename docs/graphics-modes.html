@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Graphics Modes - Dungeon Explorer</title>
+    <link rel="stylesheet" type="text/css" href="style.css">
+</head>
+
+<body><div id="app-container">
+    <h1>Dungeon Explorer (DOS, 1990)</h1>
+    <p><a href="index.html">Back to Index</a></p>
+
+    <h2>Graphics Modes</h2>
+    <p>There are two supported graphics modes: CGA and EGA. The best mode is autodetected when <code>EXPLORER.EXE</code> is run.</p>
+    <p><em>Tip: you can make DOSBox prefer CGA using a <a href="https://www.dosbox.com/wiki/Configuration:DOSBox">config</a> file. Otherwise, it'll use EGA.</em></p>
+    
+    <h3>CGA</h3>
+    <div style="margin-left:auto; margin-right:auto; text-align:center;"><img alt="" src="explorer_015.png"/></div>
+    <div class="error">CGA crashes trying to display monsters because <code>CGAMASK.PIC</code> is missing.</div>
+    <p>CGA uses 2bit color. Monsters use <code>CGAMON.PIC</code>/<code>CGAMASK.PIC</code> and tiles use <code>CGAPICS.PIC</code>. Compared to EGA, there's less space for text at the bottom so neither the room name nor monster details are displayed. The menus use 320x200 text mode. The main game uses 320x200 with double height and double width aspect ratio (rendered as 640x400).</p>
+
+    <h3>EGA</h3>
+    <div style="margin-left:auto; margin-right:auto; text-align:center;"><img alt="" src="explorer_016.png"/></div>
+    <p>EGA uses 4bit color. Monsters use <code>PYMON.PIC</code>/<code>PYMASK.PIC</code> and tiles use <code>EGAPICS.PIC</code>. The menus use 640x350 text mode. The main game uses 640x200 with double-height aspect ratio (rendered as 640x400). The extra horizontal resolution allows for more text on the bottom of the screen including full room name and monster statistics.</p>
+
+    <p><a href="index.html">Back to Index</a></p>
+</div></body>
+
+</html>

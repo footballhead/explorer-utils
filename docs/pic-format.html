@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>.PIC Format - Dungeon Explorer</title>
+    <link rel="stylesheet" type="text/css" href="style.css">
+</head>
+
+<body><div id="app-container">
+    <h1>Dungeon Explorer (DOS, 1990)</h1>
+    <p><a href="index.html">Back to Index</a></p>
+
+    <h2 id="cga_pic_format">CGA PIC Format</h2>
+    <p>Each pixel is a half-nibble (2 bits) that corresponds to the CGA palette. Stored row-major. Pixels organized into 16x16 chunks, so they take 64 bytes (with half-nibble packing). The actual image is 15x15 so the top and right 1px sides are garbage and can be ignored. While each image only takes 64 bytes, they are aligned on the 256 byte boundary; everything between 64 and 256 are garbage and can be ignored.</p>
+
+    <h2 id="ega_pic_format">EGA PIC Format</h2>
+    <p>Uses same principles as <a href="#cga_pic_format">CGA</a> with a twist. Each image takes 256 bytes but, unlike CGA, all bytes are used. That's because, essentially, the color channels are split across interleaved color channel rows. It basically looks like there are 4 black and white copies of the image. The final EGA image must be reconstructued by overlaying the rows.</p>
+
+    <p><a href="index.html">Back to Index</a></p>
+</div></body>
+
+</html>

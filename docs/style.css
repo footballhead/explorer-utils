@@ -27,3 +27,35 @@ table, td, th {
 td, th {
     padding: 0.25em;
 }
+
+div.error {
+    background: #FDD;
+    border: 1px solid firebrick;
+    padding: 0.25em;
+    border-radius: 0.25em;
+    margin: 0.25em;
+}
+
+div.warning {
+    background: #FFD;
+    border: 1px solid goldenrod;
+    padding: 0.25em;
+    border-radius: 0.25em;
+    margin: 0.25em;
+}
+
+div.good-news {
+    background: #DFD;
+    border: 1px solid forestgreen;
+    padding: 0.25em;
+    border-radius: 0.25em;
+    margin: 0.25em;
+}
+
+div.tip {
+    background: #EEF;
+    border: 1px solid royalblue;
+    padding: 0.25em;
+    border-radius: 0.25em;
+    margin: 0.25em;
+}
