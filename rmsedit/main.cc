@@ -86,6 +86,24 @@ std::vector<SDL_Texture_ptr> LoadAndConvertSpritesheet(
   return ConvertSpritesheet(renderer, images, mask_images);
 }
 
+void DrawRectangle(SDL_Renderer* renderer, SDL_Color const& color,
+                   SDL_Rect const& rect) {
+  SDL_SetRenderDrawColor(renderer, color.r, color.g, color.b, color.a);
+  SDL_RenderFillRect(renderer, &rect);
+}
+
+void DrawStyledBox(SDL_Renderer* renderer, SDL_Rect const& rect) {
+  SDL_Color constexpr border_color = {0x55, 0x55, 0xFF, 0xFF};
+  SDL_Color constexpr black_color = {0, 0, 0, 0xFF};
+  DrawRectangle(renderer, border_color, rect);
+  DrawRectangle(renderer, black_color,
+                SDL_Rect{rect.x + 1, rect.y + 2, rect.w - 2, rect.h - 4});
+  DrawRectangle(renderer, border_color,
+                SDL_Rect{rect.x + 2, rect.y + 4, rect.w - 4, rect.h - 8});
+  DrawRectangle(renderer, black_color,
+                SDL_Rect{rect.x + 3, rect.y + 6, rect.w - 6, rect.h - 12});
+}
+
 int GetTileMask(uint8_t tile) {
   switch (tile) {
     case 10:  // Attack effect
@@ -126,7 +144,7 @@ int main(int argc, char** argv) {
 
   auto window =
       make_SDL_Window(SDL_CreateWindow("RMS Editor", SDL_WINDOWPOS_CENTERED,
-                                       SDL_WINDOWPOS_CENTERED, 640, 480, 0));
+                                       SDL_WINDOWPOS_CENTERED, 640, 400, 0));
   if (!window) {
     std::cerr << "SDL_CreateWindow failed\n";
     return 1;
@@ -137,8 +155,6 @@ int main(int argc, char** argv) {
     std::cerr << "SDL_CreateRenderer failed\n";
     return 1;
   }
-
-  SDL_RenderSetLogicalSize(renderer.get(), 320, 240);
 
   // This whole special song-and-dance is necessary because the mask is stored
   // randomly in the sprite sheet
@@ -227,12 +243,23 @@ int main(int argc, char** argv) {
     }
 
     // Only draw on new events
+    constexpr auto kImageDrawWidth = kImageWidth * 2;
+    constexpr auto kImageDrawHeight = kImageHeight * 2;
+
+    constexpr auto kRoomDrawX = 20;
+    constexpr auto kRoomDrawY = 6;
+
+    SDL_SetRenderDrawColor(renderer.get(), 0, 0, 0, 0xFF);
     SDL_RenderClear(renderer.get());
+
+    DrawStyledBox(renderer.get(), SDL_Rect{14, 0, 613, 252});
+
     for (auto y = 0; y < kRoomHeight; ++y) {
       for (auto x = 0; x < kRoomWidth; ++x) {
         auto const tile = room.GetTile(x, y) - 1;
-        auto dest = SDL_Rect{x * kImageWidth, y * kImageHeight, kImageWidth,
-                             kImageHeight};
+        auto dest = SDL_Rect{kRoomDrawX + x * kImageDrawWidth,
+                             kRoomDrawY + y * kImageDrawHeight, kImageDrawWidth,
+                             kImageDrawHeight};
         SDL_RenderCopy(renderer.get(), tile_images[tile].get(), nullptr, &dest);
 
         auto const object_type = room.GetObjectType(x, y);
@@ -254,6 +281,9 @@ int main(int argc, char** argv) {
         }
       }
     }
+
+    DrawStyledBox(renderer.get(), SDL_Rect{0, 250, 639, 144});
+
     SDL_RenderPresent(renderer.get());
   }
 
