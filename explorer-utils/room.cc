@@ -39,7 +39,7 @@ int GetObjectTile(uint8_t object) {
       // TODO
       break;
     case 'l':  // Soft piece of wall
-      return 2;
+      return 42;
     case 'm':  // Soft pile of rubble
       return 18;
     case 'n':  // Old body
