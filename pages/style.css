@@ -1,0 +1,88 @@
+/******************************************************************************
+    SERVER-SIDE FONT
+
+    I want to use Linux Libertine and it's not on Google Fonts so here we are.
+
+    EOT for Internet Explorer.
+    SVG for Safari.
+    WOFF/TTF for the Firefox, Chrome, etc.
+******************************************************************************/
+
+@font-face {
+    font-family: Linux Libertine;
+    src: local('Linux Libertine'),
+         url('../fonts/LinLibertine_Rah.eot') format('embedded-opentype'),
+         url('../fonts/LinLibertine_R.woff') format('woff'),
+         url('../fonts/LinLibertine_Rah.ttf') format('truetype'),
+         url('../fonts/LinLibertine_R.svg#Linux_Libertine') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+@font-face {
+    font-family: Linux Libertine;
+    src: local('Linux Libertine Italic'),
+         url('../fonts/LinLibertine_RIah.eot') format('embedded-opentype'),
+         url('../fonts/LinLibertine_RI.woff') format('woff'),
+         url('../fonts/LinLibertine_RIah.ttf') format('truetype'),
+         url('../fonts/LinLibertine_RI.svg#Linux_Libertine') format('svg');
+    font-weight: normal;
+    font-style: italic;
+}
+@font-face {
+    font-family: Linux Libertine;
+    src: local('Linux Libertine Bold'),
+         url('../fonts/LinLibertine_RBah.eot') format('embedded-opentype'),
+         url('../fonts/LinLibertine_RB.woff') format('woff'),
+         url('../fonts/LinLibertine_RBah.ttf') format('truetype'),
+         url('../fonts/LinLibertine_RB.svg#Linux_Libertine') format('svg');
+    font-weight: bold;
+    font-style: normal;
+}
+
+/******************************************************************************
+    GENERAL STYLING
+******************************************************************************/
+
+body {
+    background-image: url('../seamless_paper_texture.png');
+    font: 13pt/140% Linux Libertine, serif;
+}
+
+#app-container {
+    /* All site content is contained within this div. This helps us control the
+     * site width. We center it on the screen because it looks better. */
+    width: 1024px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+a:link, a:visited, a:active {
+    color: #000000;
+}
+
+a:hover {
+    color: #999999;
+}
+
+h1, h2, h3 {
+    text-align: center;
+    margin-top: 2em;
+}
+
+h2 {
+    border-bottom: 1px solid black;
+}
+
+hr {
+    border: none;
+    border-top: 1px dotted black;
+}
+
+table, td, th {
+    border: 1px dotted black;
+    border-collapse: collapse;
+}
+
+td, th {
+    padding: 0.25em;
+}
