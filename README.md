@@ -21,6 +21,10 @@ make
 
 On Windows, I recommend Visual Studio Code with the CMake Tools extension.
 
+## Contributing
+
+Code must be `clang-format`'d with the Google style (except external code like `stb_image`, `stb_image_write`, etc).
+
 ## License
 
 See [UNLICENSE](UNLICENSE)
