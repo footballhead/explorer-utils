@@ -61,13 +61,9 @@ inline constexpr uint8_t HalfNibble(uint8_t const val, int const part)
     return (val >> (part*2)) & 0x3;
 }
 
-} // namespace
-
-std::vector<Image> LoadCgaSpritesheet(std::string const& filename)
+std::vector<Image> LoadCgaSpritesheet(std::vector<uint8_t> const& data)
 {
-    auto const cga_data = ReadBinaryFile(filename);
-
-    auto const num_images = cga_data.size() / kImageAlignmentInBytes;
+    auto const num_images = data.size() / kImageAlignmentInBytes;
     std::vector<Image> images(num_images, Image(kImageWidth, kImageHeight));
 
     for (auto image_index = 0; image_index < num_images; ++image_index) {
@@ -78,7 +74,7 @@ std::vector<Image> LoadCgaSpritesheet(std::string const& filename)
         for (auto y = 1; y < kCellHeight; ++y) {
             for (auto x = 0; x < kCgaBytesPerRow; ++x) {
                 auto const byte_offset = image_offset + (y * kCgaBytesPerRow) + x;
-                auto const b = cga_data[byte_offset];
+                auto const b = data[byte_offset];
 
                 // (y - 1) to compensate for ignoring the first row
                 image.Set(x * kCgaPixelsPerByte, y - 1, cga_palette[HalfNibble(b, 3)]);
@@ -97,11 +93,9 @@ std::vector<Image> LoadCgaSpritesheet(std::string const& filename)
     return images;
 }
 
-std::vector<Image> LoadEgaSpritesheet(std::string const& filename)
+std::vector<Image> LoadEgaSpritesheet(std::vector<uint8_t> const& data)
 {
-    auto const ega_data = ReadBinaryFile(filename);
-
-    auto const num_images = ega_data.size() / kImageAlignmentInBytes;
+    auto const num_images = data.size() / kImageAlignmentInBytes;
     std::vector<Image> images(num_images, Image(kImageWidth, kImageHeight)); // TODO 15x15
 
     for (auto image_index = 0; image_index < num_images; ++image_index) {
@@ -119,10 +113,10 @@ std::vector<Image> LoadEgaSpritesheet(std::string const& filename)
                     // / 2                      to convert data half-nibble to bit
                     // << Y                     to place bit in proper EGA index
                     auto const ega =
-                        ((HalfNibble(ega_data[byte_offset + kCgaBytesPerRow * 1], halfnibble) / 2) << 0x3) |
-                        ((HalfNibble(ega_data[byte_offset + kCgaBytesPerRow * 2], halfnibble) / 2) << 0x2) |
-                        ((HalfNibble(ega_data[byte_offset + kCgaBytesPerRow * 3], halfnibble) / 2) << 0x1) |
-                         (HalfNibble(ega_data[next_byte_offset],                  halfnibble) / 2);
+                        ((HalfNibble(data[byte_offset + kCgaBytesPerRow * 1], halfnibble) / 2) << 0x3) |
+                        ((HalfNibble(data[byte_offset + kCgaBytesPerRow * 2], halfnibble) / 2) << 0x2) |
+                        ((HalfNibble(data[byte_offset + kCgaBytesPerRow * 3], halfnibble) / 2) << 0x1) |
+                         (HalfNibble(data[next_byte_offset],                  halfnibble) / 2);
 
                     // Last byte of row only contains 3 pixels (because final image
                     // is 15 wide, not 16 wide)
@@ -136,4 +130,18 @@ std::vector<Image> LoadEgaSpritesheet(std::string const& filename)
     }
 
     return images;
+}
+
+} // namespace
+
+std::vector<Image> LoadCgaSpritesheet(std::string const& filename)
+{
+    auto const data = ReadBinaryFile(filename);
+    return LoadCgaSpritesheet(data);
+}
+
+std::vector<Image> LoadEgaSpritesheet(std::string const& filename)
+{
+    auto const data = ReadBinaryFile(filename);
+    return LoadEgaSpritesheet(data);
 }
