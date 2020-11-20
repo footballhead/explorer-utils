@@ -11,7 +11,9 @@ constexpr auto kImageComponents = 3; // RGB
 
 int main(int argc, char** argv)
 {
-    if (argc < 2) {
+    if (argc )
+
+    if (argc < 3) {
         std::cerr << "Usage: " << argv[0] << " in.pic out_prefix\n";
         return 1;
     }
@@ -19,7 +21,7 @@ int main(int argc, char** argv)
     auto const in_filename = argv[1];
     auto const out_prefix = argv[2];
 
-    auto images = LoadCgaSpritesheet(in_filename);
+    auto images = LoadSpritesheet(in_filename);
 
     for (auto i = 0; i < images.size(); ++i) {
         auto const out_filename = out_prefix + std::to_string(i) + ".png";

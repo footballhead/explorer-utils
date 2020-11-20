@@ -11,8 +11,7 @@ add_subdirectory(stb_image_write)
 add_subdirectory(explorer-utils)
 
 # Bins
-add_subdirectory(cgapics2png)
-add_subdirectory(egapics2png)
 add_subdirectory(maskconv)
+add_subdirectory(pic2png)
 add_subdirectory(rms2png)
 add_subdirectory(rmsedit)

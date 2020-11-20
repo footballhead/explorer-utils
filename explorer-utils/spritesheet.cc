@@ -3,6 +3,7 @@
 #include "file.h"
 
 #include <array>
+#include <cstring>
 
 namespace {
 
@@ -28,6 +29,9 @@ constexpr auto kCgaCellSizeInBytes = kCellHeight * kCgaBytesPerRow;
 constexpr auto kEgaBitsPerPixel = 4; // 16-color EGA nibble
 constexpr auto kEgaBytesPerRow = kCgaBytesPerRow * kEgaBitsPerPixel;
 constexpr auto kImageAlignmentInBytes = kCgaCellSizeInBytes * kEgaBitsPerPixel;
+
+auto constexpr cga_header = std::array<uint8_t, 4>{0x0E, 0x00, 0x0E, 0x00};
+auto constexpr ega_header = std::array<uint8_t, 4>{0x1D, 0x00, 0x0E, 0x00};
 
 auto constexpr cga_palette = std::array<color_t, 4>{
     color_t{0x00, 0x00, 0x00},
@@ -144,4 +148,16 @@ std::vector<Image> LoadEgaSpritesheet(std::string const& filename)
 {
     auto const data = ReadBinaryFile(filename);
     return LoadEgaSpritesheet(data);
+}
+
+std::vector<Image> LoadSpritesheet(std::string const& filename)
+{
+    auto const data = ReadBinaryFile(filename);
+    if (memcmp(data.data(), cga_header.data(), cga_header.size()) == 0) {
+        return LoadCgaSpritesheet(data);
+    }
+    if (memcmp(data.data(), ega_header.data(), ega_header.size()) == 0) {
+        return LoadEgaSpritesheet(data);
+    }
+    return {};
 }
