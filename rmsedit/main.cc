@@ -70,10 +70,10 @@ std::vector<SDL_Texture_ptr> ConvertSpritesheet(SDL_Renderer* renderer, std::vec
     return builder;
 }
 
-std::vector<SDL_Texture_ptr> LoadAndConvertEgaSpritesheet(SDL_Renderer* renderer, std::string const& filename, std::string const& mask_filename)
+std::vector<SDL_Texture_ptr> LoadAndConvertSpritesheet(SDL_Renderer* renderer, std::string const& filename, std::string const& mask_filename)
 {
-    auto const images = LoadEgaSpritesheet(filename);
-    auto const mask_images = LoadEgaSpritesheet(mask_filename);
+    auto const images = LoadSpritesheet(filename);
+    auto const mask_images = LoadSpritesheet(mask_filename);
     return ConvertSpritesheet(renderer, images, mask_images);
 }
 
@@ -134,7 +134,7 @@ int main(int argc, char** argv)
     // This whole special song-and-dance is necessary because the mask is stored randomly in the sprite sheet
     auto tile_images = std::vector<SDL_Texture_ptr>{};
     {
-        auto const images = LoadEgaSpritesheet("EGAPICS.PIC");
+        auto const images = LoadSpritesheet("EGAPICS.PIC");
         for (auto tile_index = 1; tile_index <= images.size(); ++tile_index) {
             auto mask_index = GetTileMask(tile_index);
 
@@ -154,7 +154,7 @@ int main(int argc, char** argv)
         }
     }
 
-    auto const monster_images = LoadAndConvertEgaSpritesheet(renderer.get(), "PYMON.PIC", "PYMASK.PIC");
+    auto const monster_images = LoadAndConvertSpritesheet(renderer.get(), "PYMON.PIC", "PYMASK.PIC");
     if (monster_images.empty()) {
         std::cerr << "LoadAndConvertEgaSpritesheet failed\n";
         return 1;
