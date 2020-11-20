@@ -2,6 +2,7 @@
 #include <explorer-utils/image.h>
 #include <explorer-utils/monster.h>
 #include <explorer-utils/room.h>
+#include <explorer-utils/spritesheet.h>
 
 #include "sdl_raii.h"
 

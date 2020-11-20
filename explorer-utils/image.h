@@ -2,7 +2,6 @@
 
 #include "color.h"
 
-#include <string>
 #include <vector>
 
 class Image {
@@ -29,6 +28,3 @@ private:
     int height_;
     std::vector<color_t> pixels_;
 };
-
-std::vector<Image> LoadCgaSpritesheet(std::string const& filename);
-std::vector<Image> LoadEgaSpritesheet(std::string const& filename);

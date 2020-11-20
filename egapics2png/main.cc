@@ -1,4 +1,4 @@
-#include <explorer-utils/image.h>
+#include <explorer-utils/spritesheet.h>
 
 #include <stb_image_write/stb_image_write.h>
 
