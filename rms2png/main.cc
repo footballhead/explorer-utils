@@ -114,9 +114,9 @@ int main(int argc, char** argv)
     auto const rms_filename = argv[5];
     auto const out_prefix = argv[6];
 
-    auto const tile_images = LoadEgaSpritesheet(egapics_filename);
-    auto const monster_images = LoadEgaSpritesheet(pymon_filename);
-    auto const monster_mask_images = LoadEgaSpritesheet(pymask_filename);
+    auto const tile_images = LoadSpritesheet(egapics_filename);
+    auto const monster_images = LoadSpritesheet(pymon_filename);
+    auto const monster_mask_images = LoadSpritesheet(pymask_filename);
     auto const tile_width = tile_images[0].GetWidth();
     auto const tile_height = tile_images[0].GetHeight();
 
