@@ -10,5 +10,6 @@ add_subdirectory(explorer-utils)
 
 # Bins
 add_subdirectory(maskconv)
+add_subdirectory(mksheet)
 add_subdirectory(pic2png)
 add_subdirectory(rms2png)
