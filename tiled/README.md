@@ -7,9 +7,9 @@ This folder consists of two parts:
 
 ## Making New Rooms
 
-`[sample/sample.tmx](sample/sample.tmx)` is provided for your convenience, copy and rename it. This has all the required parameters set, you just need to do the actual level editing part.
+[`sample/sample.tmx`](sample/sample.tmx) is provided for your convenience, copy and rename it. This has all the required parameters set, you just need to do the actual level editing part.
 
-If you're curious about how I made `sample.tmx`, read [docs/from_scratch.md](docs/from_scratch.md).
+If you're curious about how I made `sample.tmx`, read [`docs/from_scratch.md`](docs/from_scratch.md).
 
 ## Running tmx2rms
 
