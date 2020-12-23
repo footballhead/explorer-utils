@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.4" tiledversion="1.4.3" orientation="orthogonal" renderorder="right-down" width="20" height="8" tilewidth="15" tileheight="15" infinite="0" nextlayerid="2" nextobjectid="1">
+ <tileset firstgid="1" source="egapics.tsx"/>
+ <layer id="1" name="Tiles" width="20" height="8">
+  <data encoding="csv">
+3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,
+3,42,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,3,
+3,1,1,1,1,1,1,1,1,1,42,1,1,1,1,1,42,42,42,3,
+3,1,1,1,42,1,1,1,1,1,1,1,1,1,1,42,1,1,1,3,
+3,1,1,1,1,1,1,1,42,1,1,42,1,1,1,1,1,1,1,3,
+3,1,1,42,42,1,1,42,1,1,1,42,1,1,1,1,1,1,1,3,
+3,1,1,42,42,1,1,1,1,1,1,42,42,1,1,1,1,42,42,3,
+3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3
+</data>
+ </layer>
+</map>
