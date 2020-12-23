@@ -29,6 +29,9 @@ pub enum ObjectType {
 
 /// TODO: Figure out and document unknowns
 pub struct Room {
+    // Controls where small city/building send you when you Enter them (room, not coordinates?)
+    // But it's very glitched...
+    // 0 will crash, 1 will send you to the starting room but in a glitched state, etc
     unknown_a: u8,
     tiles: [u8; ROOM_AREA],
     objects: [u8; ROOM_AREA],
@@ -44,6 +47,8 @@ pub struct Room {
     id: u8,
     unknown_b: u8,
     unknown_c: u8,
+    // Room to which "an odd design" teleports you
+    // Uses coordinates when you stepped on the tile
     unknown_d: u8,
     pub name: String,
 }
