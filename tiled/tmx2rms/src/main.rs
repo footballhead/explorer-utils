@@ -2,15 +2,15 @@ mod pascal;
 mod rms;
 
 const EXPECTED_TILE_LAYER_NAME: &str = "Tiles";
-const MAX_TILE: u32 = 84;
-const MIN_TILE: u32 = 1;
+const MAX_TILE: i32 = 84;
+const MIN_TILE: i32 = 1;
 
 struct RmsTmxIntermediate {
     tiles: Vec<u8>,
 }
 
 fn validate_tmx(map: &tmx::Map) -> Option<RmsTmxIntermediate> {
-    if map.width != rms::ROOM_WIDTH as i32 || map.height != rms::ROOM_HEIGHT as i32 {
+    if map.width() != rms::ROOM_WIDTH || map.height() != rms::ROOM_HEIGHT {
         println!("Bad map dimensions");
         return None;
     }
@@ -20,31 +20,31 @@ fn validate_tmx(map: &tmx::Map) -> Option<RmsTmxIntermediate> {
     };
 
     let mut found_tiles_layer = false;
-    for layer in &map.layers {
-        if layer.name == EXPECTED_TILE_LAYER_NAME {
+    for layer in map.layers() {
+        if layer.name() == EXPECTED_TILE_LAYER_NAME {
             found_tiles_layer = true;
-            match &layer.data {
-                tmx::layer::LayerData::Tiles(tiles) => {
-                    if tiles.len() != rms::ROOM_AREA {
-                        println!("Mismatch between expected number of tiles and actual!");
-                        return None;
-                    }
+            if layer.data().is_none() {
+                println!("Tiles layer missing data!");
+                return None;
+            }
 
-                    for tile in tiles {
-                        let tile = tile.gid();
-                        if tile < MIN_TILE || tile > MAX_TILE {
-                            println!("Tile data outside expected bounds");
-                            return None;
-                        }
+            let data = layer.data().unwrap();
+            let tiles = data.tiles();
 
-                        let tile = tile as u8;
-                        intermediate.tiles.push(tile);
-                    }
-                }
-                _ => {
-                    println!("Unexpected tile data type");
+            for tile in tiles {
+                let tile = tile.gid();
+                if tile < MIN_TILE || tile > MAX_TILE {
+                    println!("Tile data outside expected bounds");
                     return None;
                 }
+
+                let tile = tile as u8;
+                intermediate.tiles.push(tile);
+            }
+
+            if intermediate.tiles.len() != rms::ROOM_AREA {
+                println!("Mismatch between expected number of tiles and actual!");
+                return None;
             }
         }
     }
@@ -70,8 +70,7 @@ fn main() {
 
     let mut rms = rms::Room::new(1, tmx_file);
 
-    let tmx = std::fs::read(tmx_file).unwrap();
-    let tmx = tmx::Map::from_xml_data(&tmx).unwrap();
+    let tmx = tmx::Map::open(tmx_file).unwrap();
     let tmx = validate_tmx(&tmx);
     if tmx.is_none() {
         return;

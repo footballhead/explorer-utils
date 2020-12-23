@@ -16,6 +16,7 @@ If you're curious about how I made `sample.tmx`, read [this doc I wrote](docs/fr
 In general,
 
 * Levels must be 20x8 tiles, with 15x15px tile dimensions
+* Level tile data must use XML format
 * There must be only one tile layer, called _Tiles_
 * There must not be any holes in the tile layer (places with no tile)
 * Tiles must be between 1 and 84 (inclusive)
