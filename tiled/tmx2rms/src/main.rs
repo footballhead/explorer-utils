@@ -1,4 +1,5 @@
 use std::collections::HashMap;
+use std::path::PathBuf;
 
 mod pascal;
 mod rms;
@@ -92,7 +93,12 @@ fn main() {
 
     let mut next_room_id = 1;
 
-    let mut tmx_to_load: Vec<String> = vec![tmx_file.to_string()];
+    // All joined rooms must be in the same folder as the input
+    let tmx_file = std::fs::canonicalize(tmx_file).unwrap();
+    let load_path_parent = tmx_file.parent().unwrap().to_path_buf();
+
+    let mut tmx_to_load: Vec<PathBuf> = vec![tmx_file];
+    // Key is a file_stem
     let mut intermediates: HashMap<String, RmsTmxIntermediate> = HashMap::new();
     'process_to_load: loop {
         let to_load = tmx_to_load.pop();
@@ -101,10 +107,9 @@ fn main() {
         }
         let to_load = to_load.unwrap();
 
-        let to_load_filename = format!("{}.tmx", to_load);
-        println!("Loading {}", to_load_filename);
+        println!("Loading {:#?}", to_load);
 
-        let tmx = tmx::Map::open(to_load_filename).unwrap();
+        let tmx = tmx::Map::open(&to_load).unwrap();
         let mut tmx = validate_tmx(&tmx).unwrap();
 
         tmx.id = next_room_id;
@@ -116,29 +121,33 @@ fn main() {
         if tmx.north.is_some() {
             let north = tmx.north.as_ref().unwrap();
             if !intermediates.contains_key(north) {
-                tmx_to_load.push(north.to_string())
+                let p = load_path_parent.join(PathBuf::from(north).with_extension("tmx"));
+                tmx_to_load.push(p);
             }
         }
         if tmx.east.is_some() {
             let east = tmx.east.as_ref().unwrap();
             if !intermediates.contains_key(east) {
-                tmx_to_load.push(east.to_string())
+                let p = load_path_parent.join(PathBuf::from(east).with_extension("tmx"));
+                tmx_to_load.push(p);
             }
         }
         if tmx.south.is_some() {
             let south = tmx.south.as_ref().unwrap();
             if !intermediates.contains_key(south) {
-                tmx_to_load.push(south.to_string())
+                let p = load_path_parent.join(PathBuf::from(south).with_extension("tmx"));
+                tmx_to_load.push(p);
             }
         }
         if tmx.west.is_some() {
             let west = tmx.west.as_ref().unwrap();
             if !intermediates.contains_key(west) {
-                tmx_to_load.push(west.to_string())
+                let p = load_path_parent.join(PathBuf::from(west).with_extension("tmx"));
+                tmx_to_load.push(p);
             }
         }
 
-        intermediates.insert(to_load, tmx);
+        intermediates.insert(to_load.file_stem().unwrap().to_str().unwrap().to_string(), tmx);
     }
 
     println!("Loaded {} rooms", intermediates.len());
