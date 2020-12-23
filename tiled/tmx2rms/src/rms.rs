@@ -4,8 +4,7 @@ use super::pascal;
 
 pub const ROOM_WIDTH: u32 = 20;
 pub const ROOM_HEIGHT: u32 = 8;
-
-const ROOM_AREA: usize = (ROOM_WIDTH * ROOM_HEIGHT) as usize;
+pub const ROOM_AREA: usize = (ROOM_WIDTH * ROOM_HEIGHT) as usize;
 
 const ROOM_RECORD_SIZE: usize = 0x168;
 const ROOM_RECORD_UNKNOWN_A_OFFSET: usize = 0x0;
