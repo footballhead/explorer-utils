@@ -1,5 +1,6 @@
 #include <explorer-utils/file.h>
 #include <explorer-utils/image.h>
+#include <explorer-utils/monster.h>
 #include <explorer-utils/room.h>
 #include <explorer-utils/spritesheet.h>
 #include <stb_image_write/stb_image_write.h>
@@ -10,9 +11,6 @@
 namespace {
 
 constexpr auto kImageComponents = 3;  // RGB
-
-constexpr auto kMonDatRecordSize = 0x1F;
-constexpr auto kMonDatGfxIdOffset = 0x16;
 
 int GetObjectTile(uint8_t object) {
   switch (object) {
@@ -118,7 +116,7 @@ int main(int argc, char** argv) {
   auto const tile_height = tile_images[0].GetHeight();
 
   auto const rooms = LoadRooms(rms_filename);
-  auto const monster_data = ReadBinaryFile(pymon_dat_filename);
+  auto const monster_data = LoadMonsterData(pymon_dat_filename);
 
   for (auto room_index = 0; room_index < rooms.size(); ++room_index) {
     auto const& room = rooms[room_index];
@@ -164,10 +162,7 @@ int main(int argc, char** argv) {
         // Monsters (with mask)
         if (object <= 'c') {
           auto const monster_index = room.monster_id - 1;
-          auto const monster_gfx =
-              monster_data[monster_index * kMonDatRecordSize +
-                           kMonDatGfxIdOffset] -
-              1;
+          auto const monster_gfx = monster_data[monster_index].gfx - 1;
           auto const& monster_img = monster_images[monster_gfx];
           auto const& mask_img = monster_mask_images[monster_gfx];
           map_image.Blit(monster_img, mask_img, x * monster_img.GetWidth(),
