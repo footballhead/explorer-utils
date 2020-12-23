@@ -2,14 +2,24 @@
 
 This folder consists of two parts:
 
-1. How to make levels with [Tiled](https://www.mapeditor.org/), which values to use, tilesets, etc
+1. How to make levels with [Tiled](https://www.mapeditor.org/): which values to use, tilesets, etc
 2. A tool called `tmx2rms` (made in Rust) for turning those Tiled levels into RMS.
 
 ## Making New Rooms
 
-`sample.tmx` is provided for your convenience, copy and rename it. This has all the required parameters set, you just need to do the actual level editing part.
+`[sample/sample.tmx](sample/sample.tmx)` is provided for your convenience, copy and rename it. This has all the required parameters set, you just need to do the actual level editing part.
 
-If you're curious about how I made `sample.tmx`, read [this doc I wrote](docs/from_scratch.md).
+If you're curious about how I made `sample.tmx`, read [docs/from_scratch.md](docs/from_scratch.md).
+
+## Running tmx2rms
+
+`tmx2rms` is a tool written in Rust for performing the TMX to RMS conversion.
+
+```
+cargo run sample/sample.tmx test.rms
+```
+
+`test.rms` can be copied, along with an appropriate `test.ovr`, to the same directory as `EXPLORER.EXE`. Then, when you run `EXPLORER.EXE`, the `TEST` adventure should be available as an option.
 
 ## Required specs
 

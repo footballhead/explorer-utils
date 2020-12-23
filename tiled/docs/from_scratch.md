@@ -25,3 +25,7 @@ In the *Properties* panel, find *Tile Layer Format* and change it to *XML (Depre
 In the *Tilesets* panel (defaults to bottom-right of Tiled), click the *New Tileset...* button:
 
 ![New tileset dialog](new_tileset.png)
+
+## Rename tile layer
+
+The tile layer must be called *Tiles*. There must only be one layer called *Tiles*.
