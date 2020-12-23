@@ -18,6 +18,8 @@ struct RmsTmxIntermediate {
     east: Option<String>,
     south: Option<String>,
     west: Option<String>,
+    up: Option<String>,
+    down: Option<String>,
 }
 
 fn validate_tmx(map: &tmx::Map) -> Result<RmsTmxIntermediate, &'static str> {
@@ -33,6 +35,8 @@ fn validate_tmx(map: &tmx::Map) -> Result<RmsTmxIntermediate, &'static str> {
         east: None,
         south: None,
         west: None,
+        up: None,
+        down: None,
     };
 
     for property in map.properties() {
@@ -42,6 +46,8 @@ fn validate_tmx(map: &tmx::Map) -> Result<RmsTmxIntermediate, &'static str> {
             "east" => intermediate.east = Some(property.value().to_string()),
             "south" => intermediate.south = Some(property.value().to_string()),
             "west" => intermediate.west = Some(property.value().to_string()),
+            "up" => intermediate.up = Some(property.value().to_string()),
+            "down" => intermediate.down = Some(property.value().to_string()),
             _ => {}
         }
     }
@@ -146,6 +152,20 @@ fn main() {
                 tmx_to_load.push(p);
             }
         }
+        if tmx.up.is_some() {
+            let up = tmx.up.as_ref().unwrap();
+            if !intermediates.contains_key(up) {
+                let p = load_path_parent.join(PathBuf::from(up).with_extension("tmx"));
+                tmx_to_load.push(p);
+            }
+        }
+        if tmx.down.is_some() {
+            let down = tmx.down.as_ref().unwrap();
+            if !intermediates.contains_key(down) {
+                let p = load_path_parent.join(PathBuf::from(down).with_extension("tmx"));
+                tmx_to_load.push(p);
+            }
+        }
 
         intermediates.insert(to_load.file_stem().unwrap().to_str().unwrap().to_string(), tmx);
     }
@@ -188,6 +208,18 @@ fn main() {
                 .get(intermediate.west.as_ref().unwrap())
                 .unwrap();
             rms.nav_west = west.id;
+        }
+        if intermediate.up.is_some() {
+            let up = intermediates
+                .get(intermediate.up.as_ref().unwrap())
+                .unwrap();
+            rms.nav_up = up.id;
+        }
+        if intermediate.down.is_some() {
+            let down = intermediates
+                .get(intermediate.down.as_ref().unwrap())
+                .unwrap();
+            rms.nav_down = down.id;
         }
 
         loaded_rooms.push(rms);

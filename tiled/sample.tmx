@@ -5,6 +5,7 @@
   <property name="name" value="Sample"/>
   <property name="north" value="sample_north"/>
   <property name="south" value="sample_south"/>
+  <property name="up" value="sample_up"/>
   <property name="west" value="sample_west"/>
  </properties>
  <tileset firstgid="1" source="egapics.tsx"/>
@@ -41,14 +42,14 @@
    <tile gid="1"/>
    <tile gid="1"/>
    <tile gid="1"/>
+   <tile gid="4"/>
    <tile gid="1"/>
    <tile gid="1"/>
    <tile gid="1"/>
    <tile gid="1"/>
    <tile gid="1"/>
    <tile gid="1"/>
-   <tile gid="1"/>
-   <tile gid="1"/>
+   <tile gid="4"/>
    <tile gid="43"/>
    <tile gid="3"/>
    <tile gid="26"/>
@@ -62,13 +63,13 @@
    <tile gid="1"/>
    <tile gid="42"/>
    <tile gid="1"/>
-   <tile gid="1"/>
+   <tile gid="4"/>
    <tile gid="1"/>
    <tile gid="1"/>
    <tile gid="1"/>
    <tile gid="1"/>
    <tile gid="42"/>
-   <tile gid="42"/>
+   <tile gid="4"/>
    <tile gid="43"/>
    <tile gid="1"/>
    <tile gid="27"/>
@@ -81,9 +82,9 @@
    <tile gid="1"/>
    <tile gid="78"/>
    <tile gid="1"/>
-   <tile gid="1"/>
-   <tile gid="1"/>
-   <tile gid="1"/>
+   <tile gid="4"/>
+   <tile gid="32"/>
+   <tile gid="4"/>
    <tile gid="1"/>
    <tile gid="42"/>
    <tile gid="1"/>
@@ -95,15 +96,15 @@
    <tile gid="1"/>
    <tile gid="1"/>
    <tile gid="1"/>
-   <tile gid="1"/>
-   <tile gid="1"/>
-   <tile gid="1"/>
-   <tile gid="42"/>
+   <tile gid="4"/>
    <tile gid="1"/>
    <tile gid="1"/>
    <tile gid="42"/>
    <tile gid="1"/>
    <tile gid="1"/>
+   <tile gid="42"/>
+   <tile gid="4"/>
+   <tile gid="4"/>
    <tile gid="1"/>
    <tile gid="1"/>
    <tile gid="1"/>
@@ -115,8 +116,8 @@
    <tile gid="1"/>
    <tile gid="42"/>
    <tile gid="42"/>
-   <tile gid="1"/>
-   <tile gid="1"/>
+   <tile gid="4"/>
+   <tile gid="4"/>
    <tile gid="42"/>
    <tile gid="1"/>
    <tile gid="1"/>
@@ -124,7 +125,7 @@
    <tile gid="42"/>
    <tile gid="1"/>
    <tile gid="1"/>
-   <tile gid="1"/>
+   <tile gid="4"/>
    <tile gid="1"/>
    <tile gid="1"/>
    <tile gid="1"/>
