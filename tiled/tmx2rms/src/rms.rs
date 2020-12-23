@@ -100,6 +100,10 @@ impl Room {
         let tile = self.objects[(y * ROOM_WIDTH + x) as usize];
         return get_object_tile(tile as char);
     }
+
+    pub fn id(&self) -> u8 {
+        self.id
+    }
 }
 
 fn get_object_tile(object: char) -> u8 {
