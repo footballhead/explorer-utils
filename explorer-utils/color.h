@@ -14,3 +14,7 @@ constexpr auto color_black = color_t{0x00, 0x00, 0x00};
 constexpr inline bool operator==(color_t const& a, color_t const& b) {
   return a.r == b.r && a.g == b.g && a.b == b.b;
 }
+
+constexpr inline bool operator!=(color_t const& a, color_t const& b) {
+  return !(a == b);
+}
