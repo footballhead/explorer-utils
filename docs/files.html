@@ -242,7 +242,7 @@
         UpRoom: byte; { Destination of stairs up }
         DownRoom: byte; { Destination of stairs down }
         RoomId: byte;
-        B: byte;
+        MonstersStartFrozen: byte; { if 1 then monsters stay put until attacked. if 0 then monsters chase you }
         TreasureFactor: byte; { Higher means more gold from chests, etc. Except 0, which means chests give 950 gold }
         OddDesignRoom: byte;
         Name: string[26];

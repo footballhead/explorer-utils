@@ -45,7 +45,8 @@ pub struct Room {
     pub nav_up: u8,
     pub nav_down: u8,
     id: u8,
-    unknown_b: u8,
+    // TODO: Allow setting monsters_start_frozen
+    monsters_start_frozen: u8,
     // TODO: Allow setting treasure_factor
     treasure_factor: u8,
     // Room to which "an odd design" teleports you
@@ -69,7 +70,7 @@ impl Room {
             nav_up: 0,
             nav_down: 0,
             id: id,
-            unknown_b: 0,
+            monsters_start_frozen: 0,
             treasure_factor: 1,
             nav_odd_design: 0,
             name: name.to_string(),
@@ -161,7 +162,7 @@ pub fn load_rooms(filename: &str) -> Vec<Room> {
                 nav_up: x[ROOM_RECORD_NORTH_OFFSET + 4],
                 nav_down: x[ROOM_RECORD_NORTH_OFFSET + 5],
                 id: x[ROOM_RECORD_ID_OFFSET],
-                unknown_b: x[ROOM_RECORD_UNKNOWN_B_OFFSET],
+                monsters_start_frozen: x[ROOM_RECORD_UNKNOWN_B_OFFSET],
                 treasure_factor: x[ROOM_RECORD_UNKNOWN_C_OFFSET],
                 nav_odd_design: x[ROOM_RECORD_UNKNOWN_D_OFFSET],
                 name: pascal::from_pascal_string(&x[ROOM_RECORD_NAME_OFFSET..ROOM_RECORD_SIZE]),
@@ -192,7 +193,7 @@ pub fn save_rooms(rooms: &Vec<Room>, filename: &str) -> std::io::Result<()> {
         file.write(&vec![room.nav_up])?;
         file.write(&vec![room.nav_down])?;
         file.write(&vec![room.id])?;
-        file.write(&vec![room.unknown_b])?;
+        file.write(&vec![room.monsters_start_frozen])?;
         file.write(&vec![room.treasure_factor])?;
         file.write(&vec![room.nav_odd_design])?;
         let mut name_pstr = pascal::to_pascal_string(&room.name, ROOM_RECORD_NAME_MAX_LENGTH);
