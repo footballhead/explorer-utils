@@ -46,6 +46,7 @@ pub struct Room {
     pub nav_down: u8,
     id: u8,
     unknown_b: u8,
+    // TODO: Allow setting treasure_factor
     treasure_factor: u8,
     // Room to which "an odd design" teleports you
     // Uses coordinates when you stepped on the tile

@@ -120,6 +120,8 @@ fn validate_tmx(map: &tmx::Map) -> Result<RmsTmxIntermediate, &'static str> {
         return Err("Didn't find Tiles layer!");
     }
 
+    // TODO: traps
+
     let mut found_objects_object_group = false;
     for object_group in map.object_groups() {
         match object_group.name() {
