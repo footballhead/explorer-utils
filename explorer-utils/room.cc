@@ -58,13 +58,9 @@ int GetObjectTile(uint8_t object) {
     case 'i':  // Door (horizontal)
       return 36;
     case 'j':  // Funny looking chest
-      // TODO
-      std::cerr << "WARN: Map wanted funny looking chest\n";
-      break;
+      return 21;
     case 'k':  // Soft section of wall
-      std::cerr << "WARN: Map wanted soft section of wall\n";
-      // TODO
-      break;
+      return 2;
     case 'l':  // Soft piece of wall
       return 42;
     case 'm':  // Soft pile of rubble
@@ -78,27 +74,17 @@ int GetObjectTile(uint8_t object) {
     case 'q':  // Old grave
       return 54;
     case 'r':  // Movable glass block:
-      // TODO
-      std::cerr << "WARN: Map wanted movable glass block\n";
-      break;
+      return 0;
     case 's':  // Old skeleton
-      // TODO
-      std::cerr << "WARN: Map wanted old skeleton (s)\n";
-      break;
+      return 74;
     case 't':  // Old skeleton
-      // TODO
-      std::cerr << "WARN: Map wanted old skeleton (t)\n";
-      break;
+      return 75;
     case 'u':  // Hollow obilisk
-      // TODO
-      std::cerr << "WARN: Map wanted Hollow obilisk\n";
-      break;
+      return 79;
     case 'v':  // "Just some blood"
       return 82;
     case 'w':  // Stone marker
-      // TODO
-      std::cerr << "WARN: wanted stone marker\n";
-      break;
+      return 59;
   }
 
   return 0;
@@ -118,6 +104,14 @@ int GetObjectTileMask(uint8_t object) {
       return 71;
     case 'q':  // Old grave
       return 65;
+    case 's':  // Old skeleton
+      return 72;
+    case 't':  // Old skeleton
+      return 73;
+    case 'v':  // Just some blood
+      return 83;
+    case 'w':  // Stone marker
+      return 81;
   }
 
   return 0;

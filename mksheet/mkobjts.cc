@@ -22,7 +22,7 @@ int main(int argc, char** argv) {
 
   auto constexpr first_object = 'd';
   auto constexpr last_object = 'w';
-  auto constexpr number_of_objects = last_object - first_object;
+  auto constexpr number_of_objects = last_object - first_object + 1;
 
   auto constexpr spritesheet_width = 10;
   auto constexpr spritesheet_height =
