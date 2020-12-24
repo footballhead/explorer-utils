@@ -106,6 +106,11 @@ impl Room {
         return get_object_tile(tile as char);
     }
 
+    pub fn set_object(&mut self, x: u32, y: u32, obj: u8) {
+        // TODO: Panic if x or y out of bounds
+        self.objects[(y * ROOM_WIDTH + x) as usize] = obj;
+    }
+
     pub fn id(&self) -> u8 {
         self.id
     }

@@ -7,10 +7,14 @@ mod rms;
 const MAX_TILE: i32 = 84;
 const MIN_TILE: i32 = 1;
 const MAX_ROOMS: u8 = 128;
+const TILE_DIMENSIONS: u32 = 15;
+const FIRST_OBJECT: u32 = 'd' as u32;
+const LAST_OBJECT: u32 = 'w' as u32;
 
 struct RmsTmxIntermediate {
     id: u8,
     tiles: Vec<u8>,
+    objects: Vec<u8>,
     name: Option<String>,
     // File name of room to north (sans extension)
     north: Option<String>,
@@ -26,9 +30,14 @@ fn validate_tmx(map: &tmx::Map) -> Result<RmsTmxIntermediate, &'static str> {
         return Err("Bad map dimensions");
     }
 
+    if map.tile_width() != TILE_DIMENSIONS || map.tile_height() != TILE_DIMENSIONS {
+        return Err("Bad tile dimensions");
+    }
+
     let mut intermediate = RmsTmxIntermediate {
         id: 0,
         tiles: Vec::new(),
+        objects: vec![0; rms::ROOM_AREA],
         name: None,
         north: None,
         east: None,
@@ -59,7 +68,7 @@ fn validate_tmx(map: &tmx::Map) -> Result<RmsTmxIntermediate, &'static str> {
             "Tiles" => first_gid_tiles = Some(tileset.first_gid()),
             "Objects" => first_gid_objects = Some(tileset.first_gid()),
             "Monsters" => first_gid_monsters = Some(tileset.first_gid()),
-            _ => println!("Unrecognized tileset: {}", tileset.name())
+            _ => println!("Unrecognized tileset: {}", tileset.name()),
         }
     }
 
@@ -85,24 +94,24 @@ fn validate_tmx(map: &tmx::Map) -> Result<RmsTmxIntermediate, &'static str> {
                 if layer.data().is_none() {
                     return Err("Tiles layer missing data!");
                 }
-    
+
                 let data = layer.data().unwrap();
                 let tiles = data.tiles();
-    
+
                 for tile in tiles {
                     let tile = (tile.gid() - first_gid_tiles as i32) + 1;
                     if tile < MIN_TILE || tile > MAX_TILE {
                         return Err("Tile data outside expected bounds");
                     }
-    
+
                     let tile = tile as u8;
                     intermediate.tiles.push(tile);
                 }
-    
+                
                 if intermediate.tiles.len() != rms::ROOM_AREA {
                     return Err("Mismatch between expected number of tiles and actual!");
                 }
-            },
+            }
             _ => {}
         }
     }
@@ -116,13 +125,30 @@ fn validate_tmx(map: &tmx::Map) -> Result<RmsTmxIntermediate, &'static str> {
         match object_group.name() {
             "Objects" => {
                 found_objects_object_group = true;
+
+                for object in object_group.objects() {
+                    if object.gid().is_none() {
+                        return Err("Object does not have a tile!");
+                    }
+
+                    let object_data =
+                        FIRST_OBJECT as u32 + (object.gid().unwrap() - first_gid_objects);
+                    if object_data > LAST_OBJECT {
+                        return Err("Object is out of bounds of expected objects");
+                    }
+
+                    let object_x = object.x() as u32 / TILE_DIMENSIONS;
+                    let object_y = object.y() as u32 / TILE_DIMENSIONS - 1;
+                    let object_index = (object_y * rms::ROOM_WIDTH + object_x) as usize;
+                    intermediate.objects[object_index] = object_data as u8;
+                }
             }
-            _ => println!("Unexpected object group named {}", object_group.name())
+            _ => println!("Unexpected object group named {}", object_group.name()),
         }
     }
 
     if !found_objects_object_group {
-        return Err("Didn't find an objects group called Objects")
+        return Err("Didn't find an objects group called Objects");
     }
 
     Ok(intermediate)
@@ -209,7 +235,10 @@ fn main() {
             }
         }
 
-        intermediates.insert(to_load.file_stem().unwrap().to_str().unwrap().to_string(), tmx);
+        intermediates.insert(
+            to_load.file_stem().unwrap().to_str().unwrap().to_string(),
+            tmx,
+        );
     }
 
     println!("Loaded {} rooms", intermediates.len());
@@ -225,6 +254,11 @@ fn main() {
         for (i, tile) in intermediate.tiles.iter().enumerate() {
             let i = i as u32;
             rms.set_tile(i % rms::ROOM_WIDTH, i / rms::ROOM_WIDTH, *tile);
+        }
+
+        for (i, obj) in intermediate.objects.iter().enumerate() {
+            let i = i as u32;
+            rms.set_object(i % rms::ROOM_WIDTH, i / rms::ROOM_WIDTH, *obj);
         }
 
         if intermediate.north.is_some() {
