@@ -4,7 +4,15 @@
   <property name="name" value="Sample (North)"/>
   <property name="south" value="sample"/>
  </properties>
- <tileset firstgid="1" source="egapics.tsx"/>
+  <tileset firstgid="1" name="Tiles" tilewidth="15" tileheight="15" tilecount="90" columns="10">
+  <image source="tiles.png" width="150" height="135"/>
+ </tileset>
+ <tileset firstgid="91" name="Monsters" tilewidth="15" tileheight="15" tilecount="60" columns="10">
+  <image source="monsters.png" width="150" height="90"/>
+ </tileset>
+ <tileset firstgid="151" name="Objects" tilewidth="15" tileheight="15" tilecount="20" columns="10">
+  <image source="objects.png" width="150" height="30"/>
+ </tileset>
  <layer id="1" name="Tiles" width="20" height="8">
   <data>
    <tile gid="43"/>

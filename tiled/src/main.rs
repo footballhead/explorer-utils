@@ -4,7 +4,6 @@ use std::path::PathBuf;
 mod pascal;
 mod rms;
 
-const EXPECTED_TILE_LAYER_NAME: &str = "Tiles";
 const MAX_TILE: i32 = 84;
 const MIN_TILE: i32 = 1;
 const MAX_ROOMS: u8 = 128;
@@ -52,30 +51,59 @@ fn validate_tmx(map: &tmx::Map) -> Result<RmsTmxIntermediate, &'static str> {
         }
     }
 
+    let mut first_gid_tiles: Option<u32> = None;
+    let mut first_gid_objects: Option<u32> = None;
+    let mut first_gid_monsters: Option<u32> = None;
+    for tileset in map.tilesets() {
+        match tileset.name() {
+            "Tiles" => first_gid_tiles = Some(tileset.first_gid()),
+            "Objects" => first_gid_objects = Some(tileset.first_gid()),
+            "Monsters" => first_gid_monsters = Some(tileset.first_gid()),
+            _ => println!("Unrecognized tileset: {}", tileset.name())
+        }
+    }
+
+    if first_gid_tiles.is_none() {
+        return Err("Didn't find Tiles tileset");
+    }
+    if first_gid_objects.is_none() {
+        return Err("Didn't find Objects tileset");
+    }
+    if first_gid_monsters.is_none() {
+        return Err("Didn't find Monsters tileset");
+    }
+
+    let first_gid_tiles = first_gid_tiles.unwrap();
+    let first_gid_objects = first_gid_objects.unwrap();
+    let first_gid_monsters = first_gid_monsters.unwrap();
+
     let mut found_tiles_layer = false;
     for layer in map.layers() {
-        if layer.name() == EXPECTED_TILE_LAYER_NAME {
-            found_tiles_layer = true;
-            if layer.data().is_none() {
-                return Err("Tiles layer missing data!");
-            }
-
-            let data = layer.data().unwrap();
-            let tiles = data.tiles();
-
-            for tile in tiles {
-                let tile = tile.gid();
-                if tile < MIN_TILE || tile > MAX_TILE {
-                    return Err("Tile data outside expected bounds");
+        match layer.name() {
+            "Tiles" => {
+                found_tiles_layer = true;
+                if layer.data().is_none() {
+                    return Err("Tiles layer missing data!");
                 }
-
-                let tile = tile as u8;
-                intermediate.tiles.push(tile);
-            }
-
-            if intermediate.tiles.len() != rms::ROOM_AREA {
-                return Err("Mismatch between expected number of tiles and actual!");
-            }
+    
+                let data = layer.data().unwrap();
+                let tiles = data.tiles();
+    
+                for tile in tiles {
+                    let tile = (tile.gid() - first_gid_tiles as i32) + 1;
+                    if tile < MIN_TILE || tile > MAX_TILE {
+                        return Err("Tile data outside expected bounds");
+                    }
+    
+                    let tile = tile as u8;
+                    intermediate.tiles.push(tile);
+                }
+    
+                if intermediate.tiles.len() != rms::ROOM_AREA {
+                    return Err("Mismatch between expected number of tiles and actual!");
+                }
+            },
+            _ => {}
         }
     }
 

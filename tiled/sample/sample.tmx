@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.4" tiledversion="1.4.3" orientation="orthogonal" renderorder="right-down" width="20" height="8" tilewidth="15" tileheight="15" infinite="0" nextlayerid="2" nextobjectid="1">
+<map version="1.4" tiledversion="1.4.3" orientation="orthogonal" renderorder="right-down" width="20" height="8" tilewidth="15" tileheight="15" infinite="0" nextlayerid="4" nextobjectid="4">
  <properties>
   <property name="east" value="sample_east"/>
   <property name="name" value="Sample"/>
@@ -8,7 +8,15 @@
   <property name="up" value="sample_up"/>
   <property name="west" value="sample_west"/>
  </properties>
- <tileset firstgid="1" source="egapics.tsx"/>
+ <tileset firstgid="1" name="Tiles" tilewidth="15" tileheight="15" tilecount="90" columns="10">
+  <image source="tiles.png" width="150" height="135"/>
+ </tileset>
+ <tileset firstgid="91" name="Monsters" tilewidth="15" tileheight="15" tilecount="60" columns="10">
+  <image source="monsters.png" width="150" height="90"/>
+ </tileset>
+ <tileset firstgid="151" name="Objects" tilewidth="15" tileheight="15" tilecount="20" columns="10">
+  <image source="objects.png" width="150" height="30"/>
+ </tileset>
  <layer id="1" name="Tiles" width="20" height="8">
   <data>
    <tile gid="43"/>
@@ -173,4 +181,10 @@
    <tile gid="43"/>
   </data>
  </layer>
+ <objectgroup id="2" name="Objects">
+  <object id="2" gid="152" x="255" y="60" width="15" height="15"/>
+ </objectgroup>
+ <objectgroup id="3" name="Monsters">
+  <object id="3" gid="91" x="255" y="75" width="15" height="15"/>
+ </objectgroup>
 </map>

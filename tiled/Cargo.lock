@@ -88,7 +88,7 @@ checksum = "06c64263859d87aa2eb554587e2d23183398d617427327cf2b3d0ed8c69e4800"
 [[package]]
 name = "tmx"
 version = "0.1.0"
-source = "git+https://github.com/footballhead/tmx#d2b74b7af6e0378cc42d1aa2bb0f3dec3873da59"
+source = "git+https://github.com/footballhead/tmx#70ba975b7f1bc5ad96f326a3d54737c4c4acf576"
 dependencies = [
  "csv",
  "xml-rs",
