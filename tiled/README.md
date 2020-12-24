@@ -1,5 +1,7 @@
 # RMS Editing with Tiled
 
+![DOSBox window overtop of Tiled window](docs/editor.png)
+
 This folder consists of two parts:
 
 1. How to make levels with [Tiled](https://www.mapeditor.org/): which values to use, tilesets, etc
