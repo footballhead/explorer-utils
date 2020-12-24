@@ -46,10 +46,10 @@ pub struct Room {
     pub nav_down: u8,
     id: u8,
     unknown_b: u8,
-    unknown_c: u8,
+    treasure_factor: u8,
     // Room to which "an odd design" teleports you
     // Uses coordinates when you stepped on the tile
-    unknown_d: u8,
+    nav_odd_design: u8,
     pub name: String,
 }
 
@@ -69,8 +69,8 @@ impl Room {
             nav_down: 0,
             id: id,
             unknown_b: 0,
-            unknown_c: 0,
-            unknown_d: 0,
+            treasure_factor: 1,
+            nav_odd_design: 0,
             name: name.to_string(),
         }
     }
