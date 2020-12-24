@@ -20,7 +20,7 @@ In the *Properties* panel, find *Tile Layer Format* and change it to *XML (Depre
 
 `egapics.png` is a conversion of `EGAPICS.PIC` using the `mksheet` tool, provided for the convenience of making tilesets.
 
-![EGA tileset graphics](../egapics.png)
+![EGA tileset graphics](../sample/egapics.png)
 
 In the *Tilesets* panel (defaults to bottom-right of Tiled), click the *New Tileset...* button:
 
