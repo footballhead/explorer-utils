@@ -14,10 +14,32 @@
     <h2>Unused Content</h2>
     <p>Things not present in the Dungeon of the Beast adventure.</p>
 
-    <h3>Metal ships</h3>
+    <h3>"A metal ship"</h3>
+    <div style="margin-left:auto; margin-right:auto; text-align:center;">
+        <img style="width:30px; height:30px;" alt="A metal ship (EGA)" src="egapics/egapics16.png"/>
+        <img style="width:30px; height:30px;" alt="A metal ship (CGA)" src="cgapics/cgapics16.png"/>
+    </div>
     <p>Metal ships let you safely travel across lava. They are entered and exited like the wooden ship and the flying ship.</p>
     <div style="margin-left:auto; margin-right:auto; text-align:center;"><img alt="" src="metal_ship0.png"/></div>
     <div style="margin-left:auto; margin-right:auto; text-align:center;"><img alt="" src="metal_ship1.png"/></div>
+
+    <h3>"An odd design"</h3>
+    <div style="margin-left:auto; margin-right:auto; text-align:center;">
+        <img style="width:30px; height:30px;" alt="An odd design (EGA)" src="egapics/egapics55.png"/>
+        <img style="width:30px; height:30px;" alt="An odd design (CGA)" src="cgapics/cgapics55.png"/>
+    </div>
+    <p>This is a floor tile (tile 56) which teleports you (one-way) to another room. Stepping on it, the game exlaims "You are teleported !"</p>
+    <p>Each room specifies the destination of the teleport with the <code>OddDesignRoom</code> byte near the end of the <a href="files.html#dungeon_rms"><code>RoomData</code></a> record.</p>
+
+    <h3>"A small city" and "a building"</h3>
+    <div style="margin-left:auto; margin-right:auto; text-align:center;">
+        <img style="width:30px; height:30px;" alt="A small city (EGA)" src="egapics/egapics51.png"/>
+        <img style="width:30px; height:30px;" alt="A small city (CGA)" src="cgapics/cgapics51.png"/>
+        <img style="width:30px; height:30px;" alt="A building (EGA)" src="egapics/egapics56.png"/>
+        <img style="width:30px; height:30px;" alt="A building (CGA)" src="cgapics/cgapics56.png"/>
+    </div>
+    <p>These are tiles which the player can step on and (E)nter. Doing so will teleport the player to a room based off the first byte in the <a href="files.html#dungeon_rms"><code>RoomData</code></a>.</p>
+    <p>This is glitchy. The player is not teleported anywhere inside the room so trying to move will have bad results. This can be undone by using the (!) command to go back to the start room.</p>
 
     <p><a href="index.html">Back to Index</a></p>
 </div></body>

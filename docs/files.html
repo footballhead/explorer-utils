@@ -230,7 +230,7 @@
     <p>Room data, stored in binary as an array of Pascal records:</p>
     <pre>type
     RoomData = record
-        A: byte; { unknown }
+        A: byte; { unknown, affects entering a building or city }
         Tiles: array [1..8*20] of byte;
         Objects: array [1..8*20] of byte;
         MonsterId: byte;
@@ -244,7 +244,7 @@
         RoomId: byte;
         B: byte;
         C: byte;
-        D: byte;
+        OddDesignRoom: byte;
         Name: string[26];
     end;</pre>
     <p>For an interactive webpage, <a href="interactive/index.html">click here!</a></p>
