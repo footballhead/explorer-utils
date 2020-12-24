@@ -111,6 +111,20 @@ fn validate_tmx(map: &tmx::Map) -> Result<RmsTmxIntermediate, &'static str> {
         return Err("Didn't find Tiles layer!");
     }
 
+    let mut found_objects_object_group = false;
+    for object_group in map.object_groups() {
+        match object_group.name() {
+            "Objects" => {
+                found_objects_object_group = true;
+            }
+            _ => println!("Unexpected object group named {}", object_group.name())
+        }
+    }
+
+    if !found_objects_object_group {
+        return Err("Didn't find an objects group called Objects")
+    }
+
     Ok(intermediate)
 }
 
