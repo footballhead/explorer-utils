@@ -178,4 +178,5 @@
   </data>
  </layer>
  <objectgroup id="2" name="Objects"/>
+ <objectgroup id="3" name="Monsters"/>
 </map>

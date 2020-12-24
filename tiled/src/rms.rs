@@ -36,7 +36,7 @@ pub struct Room {
     tiles: [u8; ROOM_AREA],
     objects: [u8; ROOM_AREA],
     pub monster_id: u8,
-    monster_count: u8,
+    pub monster_count: u8,
     // TODO: Make nav an array with enums?
     pub nav_north: u8,
     pub nav_east: u8,
@@ -162,8 +162,8 @@ pub fn load_rooms(filename: &str) -> Vec<Room> {
                 nav_down: x[ROOM_RECORD_NORTH_OFFSET + 5],
                 id: x[ROOM_RECORD_ID_OFFSET],
                 unknown_b: x[ROOM_RECORD_UNKNOWN_B_OFFSET],
-                unknown_c: x[ROOM_RECORD_UNKNOWN_C_OFFSET],
-                unknown_d: x[ROOM_RECORD_UNKNOWN_D_OFFSET],
+                treasure_factor: x[ROOM_RECORD_UNKNOWN_C_OFFSET],
+                nav_odd_design: x[ROOM_RECORD_UNKNOWN_D_OFFSET],
                 name: pascal::from_pascal_string(&x[ROOM_RECORD_NAME_OFFSET..ROOM_RECORD_SIZE]),
             };
             room.tiles
@@ -193,8 +193,8 @@ pub fn save_rooms(rooms: &Vec<Room>, filename: &str) -> std::io::Result<()> {
         file.write(&vec![room.nav_down])?;
         file.write(&vec![room.id])?;
         file.write(&vec![room.unknown_b])?;
-        file.write(&vec![room.unknown_c])?;
-        file.write(&vec![room.unknown_d])?;
+        file.write(&vec![room.treasure_factor])?;
+        file.write(&vec![room.nav_odd_design])?;
         let mut name_pstr = pascal::to_pascal_string(&room.name, ROOM_RECORD_NAME_MAX_LENGTH);
         // Strings are up to ROOM_RECORD_NAME_MAX_LENGTH long, 0 padded otherwise
         // TODO: This is an unproven assumption. Look at how EXPLORER.EXE loads the record.

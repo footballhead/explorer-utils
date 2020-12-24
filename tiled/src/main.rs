@@ -15,6 +15,8 @@ struct RmsTmxIntermediate {
     id: u8,
     tiles: Vec<u8>,
     objects: Vec<u8>,
+    monster_id: u8,
+    monster_count: u8,
     name: Option<String>,
     // File name of room to north (sans extension)
     north: Option<String>,
@@ -38,6 +40,8 @@ fn validate_tmx(map: &tmx::Map) -> Result<RmsTmxIntermediate, &'static str> {
         id: 0,
         tiles: Vec::new(),
         objects: vec![0; rms::ROOM_AREA],
+        monster_id: 0,
+        monster_count: 0,
         name: None,
         north: None,
         east: None,
@@ -73,13 +77,13 @@ fn validate_tmx(map: &tmx::Map) -> Result<RmsTmxIntermediate, &'static str> {
     }
 
     if first_gid_tiles.is_none() {
-        return Err("Didn't find Tiles tileset");
+        return Err("Didn't find a tileset called Tiles");
     }
     if first_gid_objects.is_none() {
-        return Err("Didn't find Objects tileset");
+        return Err("Didn't find a tileset called Objects");
     }
     if first_gid_monsters.is_none() {
-        return Err("Didn't find Monsters tileset");
+        return Err("Didn't find a tileset called Monsters");
     }
 
     let first_gid_tiles = first_gid_tiles.unwrap();
@@ -117,12 +121,13 @@ fn validate_tmx(map: &tmx::Map) -> Result<RmsTmxIntermediate, &'static str> {
     }
 
     if !found_tiles_layer {
-        return Err("Didn't find Tiles layer!");
+        return Err("Didn't find a tile layer called Tiles!");
     }
 
     // TODO: traps
 
     let mut found_objects_object_group = false;
+    let mut found_monsters_object_group = false;
     for object_group in map.object_groups() {
         match object_group.name() {
             "Objects" => {
@@ -145,12 +150,42 @@ fn validate_tmx(map: &tmx::Map) -> Result<RmsTmxIntermediate, &'static str> {
                     intermediate.objects[object_index] = object_data as u8;
                 }
             }
+            "Monsters" => {
+                found_monsters_object_group = true;
+
+                for monster in object_group.objects() {
+                    if monster.gid().is_none() {
+                        return Err("Monster does not have a tile!");
+                    }
+
+                    let monster_data = 1 + (monster.gid().unwrap() - first_gid_monsters);
+                    if monster_data < 1 {
+                        return Err("Monster out of bounds");
+                    }
+                    let monster_data = monster_data as u8;
+
+                    let monster_x = monster.x() as u32 / TILE_DIMENSIONS;
+                    let monster_y = monster.y() as u32 / TILE_DIMENSIONS - 1;
+                    let monster_index = (monster_y * rms::ROOM_WIDTH + monster_x) as usize;
+                    intermediate.objects[monster_index] = 1; // TODO what does this do?
+
+                    if intermediate.monster_id == 0 {
+                        intermediate.monster_id = monster_data as u8;
+                    } else if intermediate.monster_id != monster_data {
+                        return Err("Only one monster type allowed per room!");
+                    }
+                    intermediate.monster_count += 1;
+                }
+            }
             _ => println!("Unexpected object group named {}", object_group.name()),
         }
     }
 
     if !found_objects_object_group {
         return Err("Didn't find an objects group called Objects");
+    }
+    if !found_monsters_object_group {
+        return Err("Didn't find an objects group called Monsters");
     }
 
     Ok(intermediate)
@@ -262,6 +297,9 @@ fn main() {
             let i = i as u32;
             rms.set_object(i % rms::ROOM_WIDTH, i / rms::ROOM_WIDTH, *obj);
         }
+
+        rms.monster_id = intermediate.monster_id;
+        rms.monster_count = intermediate.monster_count;
 
         if intermediate.north.is_some() {
             let north = intermediates

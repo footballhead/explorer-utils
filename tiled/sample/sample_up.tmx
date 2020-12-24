@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.4" tiledversion="1.4.3" orientation="orthogonal" renderorder="right-down" width="20" height="8" tilewidth="15" tileheight="15" infinite="0" nextlayerid="2" nextobjectid="1">
+<map version="1.4" tiledversion="1.4.3" orientation="orthogonal" renderorder="right-down" width="20" height="8" tilewidth="15" tileheight="15" infinite="0" nextlayerid="2" nextobjectid="10">
  <properties>
   <property name="down" value="sample"/>
   <property name="name" value="Sample (2nd Floor)"/>
  </properties>
-  <tileset firstgid="1" name="Tiles" tilewidth="15" tileheight="15" tilecount="90" columns="10">
+ <tileset firstgid="1" name="Tiles" tilewidth="15" tileheight="15" tilecount="90" columns="10">
   <image source="tiles.png" width="150" height="135"/>
  </tileset>
  <tileset firstgid="91" name="Monsters" tilewidth="15" tileheight="15" tilecount="60" columns="10">
@@ -178,4 +178,15 @@
   </data>
  </layer>
  <objectgroup id="2" name="Objects"/>
+ <objectgroup id="3" name="Monsters">
+  <object id="1" gid="91" x="30" y="30" width="15" height="15"/>
+  <object id="2" gid="91" x="30" y="45" width="15" height="15"/>
+  <object id="3" gid="91" x="15" y="45" width="15" height="15"/>
+  <object id="4" gid="91" x="30" y="60" width="15" height="15"/>
+  <object id="5" gid="91" x="30" y="75" width="15" height="15"/>
+  <object id="6" gid="91" x="15" y="75" width="15" height="15"/>
+  <object id="7" gid="91" x="15" y="90" width="15" height="15"/>
+  <object id="8" gid="91" x="15" y="105" width="15" height="15"/>
+  <object id="9" gid="91" x="30" y="90" width="15" height="15"/>
+ </objectgroup>
 </map>
