@@ -16,6 +16,33 @@ constexpr auto kRoomMonsterCountOffset = 0x142;
 constexpr auto kRoomNorthIdOffset = 0x143;
 constexpr auto kRoomIdOffset = 0x149;
 
+}  // namespace
+
+uint8_t room_t::GetTile(int x, int y) const {
+  auto const tile = tiles[y * kRoomWidth + x];
+  // Different traps are different ASCII characters
+  if (tile > 84) {
+    return 21;
+  }
+  return tile;
+}
+
+auto room_t::GetObjectType(int x, int y) const -> object_type {
+  auto const tile = objects[y * kRoomWidth + x];
+  if (tile == 0) {
+    return object_type::none;
+  }
+  if (tile <= 'c') {
+    return object_type::monster;
+  }
+  return object_type::object;
+}
+
+uint8_t room_t::GetObject(int x, int y) const {
+  auto const tile = objects[y * kRoomWidth + x];
+  return GetObjectTile(tile);
+}
+
 int GetObjectTile(uint8_t object) {
   switch (object) {
     case 'd':  // Magical darkness
@@ -94,33 +121,6 @@ int GetObjectTileMask(uint8_t object) {
   }
 
   return 0;
-}
-
-}  // namespace
-
-uint8_t room_t::GetTile(int x, int y) const {
-  auto const tile = tiles[y * kRoomWidth + x];
-  // Different traps are different ASCII characters
-  if (tile > 84) {
-    return 21;
-  }
-  return tile;
-}
-
-auto room_t::GetObjectType(int x, int y) const -> object_type {
-  auto const tile = objects[y * kRoomWidth + x];
-  if (tile == 0) {
-    return object_type::none;
-  }
-  if (tile <= 'c') {
-    return object_type::monster;
-  }
-  return object_type::object;
-}
-
-uint8_t room_t::GetObject(int x, int y) const {
-  auto const tile = objects[y * kRoomWidth + x];
-  return GetObjectTile(tile);
 }
 
 std::vector<room_t> LoadRooms(std::string const& filename) {

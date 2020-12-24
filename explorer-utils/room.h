@@ -41,4 +41,7 @@ struct room_t {
   uint8_t GetObject(int x, int y) const;
 };
 
+int GetObjectTile(uint8_t object);
+int GetObjectTileMask(uint8_t object);
+
 std::vector<room_t> LoadRooms(std::string const& filename);
